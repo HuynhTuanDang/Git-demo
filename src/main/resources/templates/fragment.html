@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>List of Customer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1 class="text-left" >IT CERTIFICATE MANAGEMENT</h1>
+    </div>
+</header>
+<div id="addCert" class="container">
+    <form class="form-group" th:action="@{/itCertManagement/add}" method="post" th:object="${cert}" enctype="multipart/form-data">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="certId"><b>Cert id *</b></label>
+                        <input type="text" class="form-control" id="certId" th:field="*{certId}" >
+                    </div>
+                    <div class="form-group">
+                        <label for="certName"><b>Certification Name *</b></label>
+                        <input type="text" class="form-control" id="certName" th:field="*{certName}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="certCost"><b>Cost *</b></label>
+                        <input type="text" class="form-control" id="certCost" th:field="*{cost}">
+                    </div>
+                    <div class="form-group">
+                        <label for="certCategory"><b>Category *</b></label>
+                        <br>
+                        <select id="certCategory" class="form-group" name="selectedCategoryId" style="width: 100%">
+                            <th:block th:each="category : ${categories}">
+                                <option th:value="${category.categoryId}" th:text="${category.name}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group float-right">
+            <td><button class="btn btn-success" type="submit" value="Adding">Save</button></td>
+            <td><button class="btn btn-light"><a th:href="@{/itCertManagement/show}">Reset</a></button></td>
+            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUserModal">Classify</button></td>
+        </div>
+    </form>
+</div>
+
+<div id="listCert" class="container">
+        <table class="table tableTab table-striped table-bordered">
+            <tr>
+                <th>Id</th>
+                <th>Certification</th>
+                <th>Cost($)</th>
+                <th>Category</th>
+                <th>Delete</th>
+            </tr>
+            <th:block th:each="cert  :${certs}">
+                <tr>
+<!--                    <td th:text="${cert.certId}"></td>-->
+                    <td ><a th:href="@{/itCertManagement/show(id=${cert.certId})}" th:text="${cert.certId}"></a></td>
+                    <td th:text="${cert.certName}"></td>
+                    <td th:text="${cert.cost}"></td>
+                    <td th:text="${cert.category.name}"></td>
+                    <td><a th:href="@{/itCertManagement/delete(id=${cert.certId})}" onclick="return confirm('Do you want to delete the record ?')">Delete</a></td>
+                </tr>
+            </th:block>
+        </table>
+
+</div>
+
+<div id="UserModal" class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title" id="exampleModalLabel" style="background-image: linear-gradient(
+                to left, violet, indigo, green, blue, yellow, orange, red);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                font-weight: bold;
+                )">Certification Management</h2>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div id="divAddUser">
+                <form >
+                    <div class="container">
+                        <h4 >Total of certificates by the category</h4>
+                        <hr>
+                        <table class="table tableTab table-striped table-bordered">
+                            <tr>
+                                <th>#</th>
+                                <th>Category</th>
+                                <th>Total</th>
+                            </tr>
+                            <th:block th:each="category,i :${categories}">
+                                <tr>
+                                    <td th:text="${i.count}"></td>
+                                    <td th:text="${category.name}"></td>
+                                    <td th:text="0"></td>
+                                </tr>
+                            </th:block>
+                        </table>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="mt-4">
+    <div class="container">
+        <p class="text-center">Base on Spring Framework</p>
+        <p class="text-center">Copyright @ 2023 by HTD</p>
+        <p class="text-center">@FPT Software</p>
+    </div>
+</footer>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>
