@@ -10,6 +10,7 @@ public class homeController {
     @GetMapping
     public String home() {
         System.out.println("Test");
+        System.out.println("Hello");
         return "redirect:/itCertManagement/show";
     }
 }
